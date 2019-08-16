@@ -4,12 +4,19 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');//打包时自动
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');//将css从js文件抽离出来单独打包
 
 module.exports = {
+    mode: 'production',
     entry:{
         index:'./src/index.js'
     },
     output:{
         filename:'js/[name].js',
+        chunkFilename:'js/[name].js',
         path:path.resolve(__dirname,'dist')
+    },
+    resolve:{
+        alias:{
+            '@':path.join(__dirname,'src')
+        }
     },
     module:{
         rules:[
@@ -24,12 +31,23 @@ module.exports = {
                 test:/\.scss$/,
                 use:[{
                     loader:MiniCssExtractPlugin.loader,
+                    options:{
+                        publicPath:'../'
+                    }
                     
                 },'css-loader','sass-loader']
             },
             {
                 test:/.(eot|svg|ttf|woff|woff2)/,
-                loader:'url-loader'
+                use:[
+                    {
+                        loader:'file-loader',
+                        options:{
+                            outputPath:'font/'
+                        }
+                    }
+                ]
+                
             }
         ]
     },
@@ -41,12 +59,29 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename:'css/[name].css',
-            chunkFilename:'css/[id].[hash].css'
+            chunkFilename:'css/[hash].css'
         })
     ],
-    resolve:{
-        alias:{
-            '@':path.join(__dirname,'src')
+    optimization:{
+        splitChunks: {
+            chunks: "all",
+            minSize: 30000,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',
+            name: true,
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10
+                },
+            default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
+                }
+            }
         }
-    },
+    }
 }
