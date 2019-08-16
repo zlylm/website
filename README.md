@@ -6,8 +6,8 @@
 
 3.安装mini-css-extract-plugin,将css从js中抽离出来。
 
-4.安装bootstrap,需要注意的是，bootstrap中会引入一些字体文件，所以要配置.eot等字体文件的loader
+4.安装bootstrap,需要注意的是，bootstrap中会引入一些字体文件，所以要配置.eot等字体文件的loader。
 
-5.使用file-loader处理bootstrap中相关的字体文件和其它文件
+5.使用file-loader处理bootstrap中相关的字体文件和其它文件。
 
-6.配置optimization中的splitChunks属性，使代码分离，不打包到一个文件中
+6.配置optimization中的splitChunks属性，使代码分离，不打包到一个文件中。
