@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');//打包时自动删除旧的dist文件夹
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');//将css从js文件抽离出来单独打包
@@ -17,6 +18,12 @@ module.exports = {
         alias:{
             '@':path.join(__dirname,'src')
         }
+    },
+    devServer:{
+        contentBase:path.join(__dirname,'dist'),
+        compress: true,
+        port: 3000,
+        hot: true
     },
     module:{
         rules:[
@@ -60,28 +67,17 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename:'css/[name].css',
             chunkFilename:'css/[hash].css'
-        })
+        }),
+        new webpack.ProvidePlugin({
+            $:'jquery',//当在某个文件中遇到$字符时，自动给你引入jquery模块
+            jQuery:'jquery',
+        }),
+        //热替换，实现局部刷新
+        new webpack.HotModuleReplacementPlugin(),
     ],
     optimization:{
         splitChunks: {
-            chunks: "all",
-            minSize: 30000,
-            minChunks: 1,
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
-            automaticNameDelimiter: '~',
-            name: true,
-            cacheGroups: {
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10
-                },
-            default: {
-                    minChunks: 2,
-                    priority: -20,
-                    reuseExistingChunk: true
-                }
-            }
+            chunks: "all"
         }
     }
 }
