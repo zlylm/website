@@ -3,7 +3,10 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');//打包时自动删除旧的dist文件夹
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');//将css从js文件抽离出来单独打包
-
+//简化路径
+function resolveResource(name){
+    return path.resolve(__dirname,'./src/scss/'+name)
+}
 module.exports = {
     mode: 'production',
     entry:{
@@ -36,13 +39,22 @@ module.exports = {
             },
             {
                 test:/\.scss$/,
-                use:[{
-                    loader:MiniCssExtractPlugin.loader,
-                    options:{
-                        publicPath:'../'
+                use:[
+                    {
+                        loader:MiniCssExtractPlugin.loader,
+                        options:{
+                            publicPath:'../'
+                        }
+                    },
+                    'css-loader',
+                    'sass-loader',
+                    {
+                        loader:'sass-resources-loader',
+                        options:{
+                            resources: [resolveResource('theme.scss')]  
+                        }
                     }
-                    
-                },'css-loader','sass-loader']
+                ]
             },
             {
                 test:/.(eot|svg|ttf|woff|woff2)/,

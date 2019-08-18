@@ -24,5 +24,11 @@
 使用ProvidePlugin配置了jquery后，jquery库不会被分离，而是和入口文件打包在一起。
 devServer启动后，页面有警告，应该是字体文件的问题。
 
+# 2019-8-18
 
+1.制作一个简单的header
+
+2.安装sass-resources-loader,实现全局的sass变量。
+
+3.查找html模板相关插件，实现html代码公用(还未实现)。
 

@@ -1,4 +1,9 @@
 @import './common.scss';
-body{
-    background: yellow
+.diy-nav{
+    background: #fff;
+    height: 60px;
+    box-sizing: border-box;
+    padding-top: 5px;
+    border-bottom: solid #e7e7e7 1px;
+    color: $gbColor;
 }
